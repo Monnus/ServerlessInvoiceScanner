@@ -13,3 +13,7 @@
 ### 2.1 `FormatGetDynamodbData.mjs`
 - Helper: Helper function to ** GetDynamodbData.mjs ** 
 - Pupose: helps format and structure the dynamodb data before sending it to front-end
+
+## Environment Variables:
+- `DYNAMODB_TABLE_NAME`: The name of the DynamoDB table for storing extracted data.
+- ` FETCH_TABLE_KEY` : the partition key used in dynamoDB 
