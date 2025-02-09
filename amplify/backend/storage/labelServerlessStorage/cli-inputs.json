@@ -1,0 +1,15 @@
+{
+  "resourceName": "labelServerlessStorage",
+  "policyUUID": "7e469de9",
+  "bucketName": "public-invoice-scanner-bucket",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "groupAccess": {}
+}
