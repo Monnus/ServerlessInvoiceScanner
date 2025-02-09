@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# Serverless Invoice Scanner
+A Serverless Invoice Scanner built using AWS cloud services and a React front-end, designed to analyze uploaded invoices and extract key data using Amazon Textract. The extracted data is stored in DynamoDB and can be viewed via a front-end React app connected to an API Gateway.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Architecture
+Frontend: ReactJS
+Allows users to upload invoices and view extracted data.
+Backend: AWS Lambda, API Gateway, DynamoDB, S3, and Textract
+Fully serverless architecture for scalability and ease of management.<br/>
+AWS Services Used<br/>
+Amazon S3<br/>
 
-## Available Scripts
+Used to store uploaded invoices in a dedicated bucket (public-invoice-scanner-bucketc3330-dev).
+AWS Lambda
 
-In the project directory, you can run:
+** Two Lambda functions were implemented: ** 
+Textract Lambda Function (Back-end Processing):
+Triggered by an S3 event.
+Uses Amazon Textract to analyze invoices and extract key-value pairs and table data.
+Saves the extracted data to DynamoDB.
+Deletes previous entries from DynamoDB before adding the latest result to ensure only the most recent entry is available.
+DynamoDB Fetch Lambda Function (API Response):
+Provides the most recent invoice data stored in DynamoDB via an API Gateway GET request.
+Includes optimized data formatting for better front-end display.
+Amazon DynamoDB
 
-### `npm start`
+Stores extracted invoice data (e.g., key-value pairs and tables).
+Each record includes metadata such as upload date and the extracted information.
+Amazon Textract
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Performs OCR (Optical Character Recognition) on invoices to extract structured data, including tables and key-value pairs.
+API Gateway
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Connects the front-end React application to the DynamoDB Fetch Lambda function.
+Configured with CORS support for secure cross-origin requests.
+Features
+Invoice Upload:
 
-### `npm test`
+Users can upload PDF invoices via the front-end.
+Files are stored in the S3 bucket and trigger the Textract Lambda function.
+Data Extraction:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Textract extracts key information from the invoice, such as Invoice Number, Issue Date, Due Date, and detailed table data.
+Data Storage:
 
-### `npm run build`
+The extracted information is stored in DynamoDB with the most recent entry available for the user.
+Data Retrieval:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The React front-end fetches and displays the extracted data using the API Gateway and DynamoDB Fetch Lambda function.
+React Front-end
+Built with ReactJS for an intuitive and user-friendly interface.
+Users can:
+Upload an invoice to S3.
+View the extracted data in a well-formatted JSON summary.
+Clear the view with a button click for a fresh experience.
+Key Components:
+FileUpload Component:
+Allows users to upload files to S3.
+Displays a progress indicator during the upload process.
+ViewData Component:
+Fetches the latest extracted invoice data from the API Gateway.
+Displays data in a clean and readable format, with a Clear Data button.
+How It Works
+Upload:
+The user uploads an invoice (PDF) through the front-end.
+Trigger:
+The upload triggers the Textract Lambda function.
+Textract extracts key data from the invoice.
+Store:
+The extracted data is stored in DynamoDB.
+Previous entries are cleared to keep only the most recent data.
+Fetch and Display:
+The front-end fetches the most recent entry from DynamoDB and displays it to the user.
+Example Data Display
+json
+Copy
+Edit
+```
+{
+  "Invoice ID": "public/invoice.pdf",
+  "Upload Date": "2025-02-07T17:57:08.789Z",
+  "Key-Value Pairs": {
+    "Invoice #": "1001",
+    "Issued": "11/9/2024",
+    "Due": "12/9/2024",
+    "Subtotal": "$4,000.00",
+    "Tax": "$0.00",
+    "Balance Due": "$4,000.00"
+  },
+  "Table Data": [
+    ["Item Description", "Price", "Quantity", "Tax", "Total"],
+    ["Consulting Services", "$150.00", "10", "$0.00", "$1,500.00"],
+    ["Software Development", "$100.00", "20", "$0.00", "$2,000.00"]
+  ]
+}
+```
