@@ -74,6 +74,10 @@ Example Data Display
 json
 Copy
 Edit
+
+![Image of Project Architecture ](images/Serverless-invoice-scanner Diagram.drawio.png)
+
+
 ```
 {
   "Invoice ID": "public/invoice.pdf",
