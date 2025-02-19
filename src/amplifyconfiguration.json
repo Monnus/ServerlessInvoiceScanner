@@ -1,0 +1,26 @@
+{
+  "aws_project_region": "us-east-1",
+  "aws_cognito_identity_pool_id": "us-east-1:ec0e5f3a-5169-496d-afb5-c8230e881aa4",
+  "aws_cognito_region": "us-east-1",
+  "aws_user_pools_id": "us-east-1_2TrDQg1MG",
+  "aws_user_pools_web_client_id": "27hpt4iu6uugj558tk9ohcq6ud",
+  "oauth": {},
+  "aws_cognito_username_attributes": [],
+  "aws_cognito_social_providers": [],
+  "aws_cognito_signup_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_mfa_configuration": "OFF",
+  "aws_cognito_mfa_types": [
+    "SMS"
+  ],
+  "aws_cognito_password_protection_settings": {
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": []
+  },
+  "aws_cognito_verification_mechanisms": [
+    "EMAIL"
+  ],
+  "aws_user_files_s3_bucket": "public-invoice-scanner-bucketc3330-dev",
+  "aws_user_files_s3_bucket_region": "us-east-1"
+}
