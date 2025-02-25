@@ -10,7 +10,7 @@ function App() {
   return (
   
       <div className="App">
-          <h1>Upload Document to S3</h1>
+          <h1>Upload any Invoice to scan</h1>
           <FileUpload />
           <ViewData/>
       </div>
